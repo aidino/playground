@@ -1,6 +1,6 @@
 # Fairseq examples
 
-## MMPT - VideoCLIP and VLM
+## 01. MMPT - VideoCLIP and VLM
 
 Bạn vừa khám phá ra bộ công cụ tuyệt vời để hiểu video đa phương thức! Nó bao gồm 2 phương pháp mới nhất: VideoCLIP và VLM, cùng với những công cụ hiệu suất cao thường thiếu trong các bộ mã hiện có. Bộ công cụ này được thiết kế với các thành phần được tinh chỉnh hiệu suất, có thể thích ứng với nhiều khung khác nhau (ban đầu sử dụng fairseq).
 
@@ -11,7 +11,7 @@ Bạn vừa khám phá ra bộ công cụ tuyệt vời để hiểu video đa p
 
 Tóm lại, bộ công cụ này cung cấp các phương pháp mạnh mẽ để phân tích và hiểu video đa phương thức, với khả năng ứng dụng cao trong nhiều lĩnh vực.
 
-## adaptive_span - Adaptive Span
+## 02. adaptive_span - Adaptive Span
 
 Adaptive Span là một cơ chế tự chú ý mới có thể tự học khoảng chú ý tối ưu của nó. Điều này cho phép chúng ta mở rộng đáng kể kích thước ngữ cảnh tối đa được sử dụng trong Transformer, đồng thời vẫn kiểm soát được lượng bộ nhớ và thời gian tính toán. Nó sử dụng kỹ thuật Truncated BPTT để huấn luyện, giống như trong transformerXL.
 
@@ -522,35 +522,336 @@ Bài báo này giới thiệu một phương pháp mới để huấn luyện m�
 
 ## layerdrop
 
+**Reducing Transformer Depth on Demand with Structured Dropout (Fan et al., 2019)**
+
+Đây là tiêu đề của một bài báo khoa học về tối ưu hóa mô hình Transformer.
+
+**Giải thích:**
+
+* **Transformer:**  Kiến trúc mạng nơ-ron phổ biến trong xử lý ngôn ngữ tự nhiên (NLP), thường được sử dụng trong các tác vụ như dịch máy, tóm tắt văn bản.
+* **Depth:** Độ sâu của mô hình Transformer, tức là số lượng lớp (layers) trong mô hình. Mô hình càng sâu, khả năng học hỏi các đặc trưng phức tạp càng cao, nhưng cũng đồng thời tốn kém hơn về mặt tính toán.
+* **On Demand:** Theo yêu cầu, tức là mô hình có thể tự động điều chỉnh độ sâu sao cho phù hợp với từng tác vụ hoặc dữ liệu cụ thể.
+* **Structured Dropout:** Một kỹ thuật loại bỏ một số lớp trong mô hình một cách có cấu trúc trong quá trình huấn luyện.
+
+**Ý tưởng chính:**
+
+Bài báo đề xuất một phương pháp gọi là **LayerDrop**, một dạng Structured Dropout, để giảm độ sâu của mô hình Transformer một cách linh hoạt. 
+
+Trong quá trình huấn luyện, LayerDrop sẽ ngẫu nhiên loại bỏ một số lớp trong mô hình. Điều này giúp mô hình học cách tổng quát hóa tốt hơn và tránh hiện tượng overfitting (quá khớp).
+
+Khi sử dụng mô hình để dự đoán, ta có thể lựa chọn sử dụng toàn bộ mô hình hoặc chỉ một phần của mô hình (tức là giảm độ sâu) tùy thuộc vào yêu cầu về độ chính xác và tốc độ.
+
+**Lợi ích:**
+
+* **Giảm chi phí tính toán:**  Bằng cách giảm độ sâu của mô hình, ta có thể giảm lượng tính toán cần thiết, từ đó tăng tốc độ xử lý.
+* **Cải thiện hiệu suất:**  Structured Dropout giúp mô hình tổng quát hóa tốt hơn, dẫn đến hiệu suất tốt hơn trên các tác vụ NLP.
+* **Linh hoạt:**  Mô hình có thể thích ứng với các yêu cầu khác nhau về độ chính xác và tốc độ.
+
+**Tóm lại:**
+
+Bài báo này giới thiệu một kỹ thuật hiệu quả để giảm độ sâu của mô hình Transformer một cách linh hoạt, giúp cải thiện hiệu suất và giảm chi phí tính toán.
+
 ## linformer
+
+**Linformer: Self-Attention with Linear Complexity (Wang et al., 2020)**
+
+Đây là tiêu đề của một bài báo khoa học về cải thiện hiệu quả của mô hình Transformer.
+
+**Giải thích:**
+
+* **Transformer:** Kiến trúc mạng nơ-ron phổ biến trong xử lý ngôn ngữ tự nhiên (NLP), nổi tiếng với cơ chế tự chú ý (self-attention).
+* **Self-attention:** Cho phép mô hình tập trung vào các phần quan trọng của dữ liệu đầu vào, giúp nắm bắt được mối quan hệ giữa các từ trong câu.
+* **Độ phức tạp (Complexity):**  Thước đo lượng tài nguyên tính toán cần thiết để thực hiện một thuật toán. Độ phức tạp của self-attention trong Transformer truyền thống là O(n^2), tức là tăng theo bình phương độ dài của chuỗi đầu vào. Điều này gây khó khăn khi xử lý các chuỗi dài.
+* **Tuyến tính (Linear):**  Độ phức tạp tuyến tính là O(n), tức là tăng tuyến tính với độ dài của chuỗi.
+
+**Ý tưởng chính:**
+
+Bài báo đề xuất Linformer, một biến thể của Transformer sử dụng cơ chế tự chú ý với độ phức tạp tuyến tính. Linformer đạt được điều này bằng cách giảm số lượng phép tính cần thiết trong self-attention thông qua các phép chiếu tuyến tính.
+
+**Lợi ích:**
+
+* **Hiệu quả hơn:** Linformer giảm đáng kể lượng bộ nhớ và thời gian tính toán cần thiết, đặc biệt là khi xử lý các chuỗi dài.
+* **Duy trì hiệu suất:**  Mặc dù giảm độ phức tạp, Linformer vẫn đạt được hiệu suất tương đương với Transformer truyền thống trên nhiều tác vụ NLP.
+
+**Ứng dụng:**
+
+Linformer có thể được ứng dụng trong các tác vụ NLP đòi hỏi xử lý chuỗi dài, ví dụ như:
+
+* **Tóm tắt văn bản:**  Tóm tắt các tài liệu dài.
+* **Hỏi đáp:**  Trả lời câu hỏi dựa trên các đoạn văn bản dài.
+* **Dịch máy:**  Dịch các văn bản dài.
+
+**Tóm lại:**
+
+Linformer là một cải tiến quan trọng đối với mô hình Transformer, giúp giảm độ phức tạp của self-attention mà không làm giảm hiệu suất. Điều này mở ra khả năng ứng dụng Transformer trong các tác vụ xử lý ngôn ngữ tự nhiên với quy mô lớn hơn.
+
 
 ## m2m_100
 
+**Beyond English-Centric Multilingual Machine Translation**
+
+**Vượt ra ngoài Dịch máy Đa ngôn ngữ lấy Tiếng Anh làm Trung tâm**
+
+**Giới thiệu**
+
+Trong nghiên cứu này, chúng tôi tạo ra một mô hình dịch đa ngôn ngữ thực sự Many-to-Many có thể dịch trực tiếp giữa bất kỳ cặp nào trong số 100 ngôn ngữ. Trọng tâm của chúng tôi vào các mô hình không lấy tiếng Anh làm trung tâm (non-English-Centric) mang lại mức tăng hơn 10 BLEU khi dịch trực tiếp giữa các hướng không phải tiếng Anh, đồng thời hoạt động cạnh tranh với các hệ thống đơn lẻ tốt nhất của WMT.
+
+Nếu bạn chưa quen với việc sử dụng fairseq, hãy đọc hướng dẫn sau. Nếu không, hãy chuyển đến các phần bên dưới.
+
+**Giải thích:**
+
+* **Many-to-Many Multilingual Translation:**  Mô hình dịch máy có thể dịch trực tiếp giữa bất kỳ cặp ngôn ngữ nào trong tập hợp các ngôn ngữ được hỗ trợ. Ví dụ, mô hình có thể dịch từ tiếng Pháp sang tiếng Nhật mà không cần phải dịch qua tiếng Anh như một ngôn ngữ trung gian.
+* **English-Centric:**  Mô hình dịch đa ngôn ngữ truyền thống thường lấy tiếng Anh làm trung tâm. Điều này có nghĩa là mô hình được huấn luyện chủ yếu trên dữ liệu song ngữ tiếng Anh-ngôn ngữ khác, và khi dịch giữa hai ngôn ngữ không phải tiếng Anh, mô hình thường dịch qua tiếng Anh như một bước trung gian.
+* **Non-English-Centric:**  Mô hình dịch đa ngôn ngữ không lấy tiếng Anh làm trung tâm. Mô hình này được huấn luyện trên dữ liệu song ngữ của nhiều cặp ngôn ngữ khác nhau, không chỉ tập trung vào tiếng Anh.
+* **BLEU:**  Một chỉ số phổ biến để đánh giá chất lượng dịch máy. Điểm BLEU càng cao thì bản dịch càng tốt.
+* **WMT:**  Workshop on Machine Translation, một hội thảo quốc tế về dịch máy.
+
+**Lợi ích của mô hình Non-English-Centric:**
+
+* **Cải thiện chất lượng dịch:**  Mô hình không lấy tiếng Anh làm trung tâm có thể tạo ra các bản dịch chính xác và tự nhiên hơn khi dịch giữa các ngôn ngữ không phải tiếng Anh.
+* **Giảm độ trễ:**  Dịch trực tiếp giữa hai ngôn ngữ giúp giảm thời gian dịch.
+* **Hỗ trợ các ngôn ngữ ít tài nguyên:**  Mô hình có thể học hỏi từ dữ liệu song ngữ của nhiều cặp ngôn ngữ, bao gồm cả các ngôn ngữ ít tài nguyên.
+
+**Tóm lại:**
+
+Nghiên cứu này giới thiệu một mô hình dịch máy đa ngôn ngữ Many-to-Many không lấy tiếng Anh làm trung tâm. Mô hình này mang lại hiệu suất vượt trội khi dịch giữa các ngôn ngữ không phải tiếng Anh, đồng thời cạnh tranh với các hệ thống dịch tốt nhất hiện nay.
+
+
 ## mbart
+**MBART: Multilingual Denoising Pre-training for Neural Machine Translation**
+
+**Giới thiệu**
+
+MBART là một bộ mã hóa tự động giảm nhiễu dạng chuỗi-tới-chuỗi (sequence-to-sequence denoising auto-encoder) được huấn luyện trước trên các tập dữ liệu đơn ngữ quy mô lớn bằng nhiều ngôn ngữ sử dụng mục tiêu BART. MBART là một trong những phương pháp đầu tiên để huấn luyện trước một mô hình chuỗi-tới-chuỗi hoàn chỉnh bằng cách giảm nhiễu toàn bộ văn bản bằng nhiều ngôn ngữ, trong khi các phương pháp trước đây chỉ tập trung vào bộ mã hóa, bộ giải mã hoặc tái tạo các phần của văn bản.
+
+**Giải thích:**
+
+* **Sequence-to-sequence:** Mô hình nhận đầu vào là một chuỗi (ví dụ: câu văn) và tạo ra đầu ra cũng là một chuỗi (ví dụ: bản dịch của câu văn đó).
+* **Denoising auto-encoder:**  Một loại mô hình học máy được huấn luyện để tái tạo lại dữ liệu đầu vào sau khi nó đã bị nhiễu. Trong trường hợp này, MBART được huấn luyện để tái tạo lại văn bản gốc sau khi nó đã bị thêm nhiễu (ví dụ: xáo trộn thứ tự từ, thêm hoặc xóa từ).
+* **Pre-trained:**  Mô hình được huấn luyện trước trên một lượng dữ liệu lớn trước khi được tinh chỉnh cho một tác vụ cụ thể (ví dụ: dịch máy).
+* **Multilingual:**  MBART được huấn luyện trên dữ liệu của nhiều ngôn ngữ khác nhau, cho phép nó học được các biểu diễn chung giữa các ngôn ngữ.
+* **BART objective:**  Mục tiêu huấn luyện của BART, một mô hình tiền nhiệm của MBART.
+
+**Ưu điểm của MBART:**
+
+* **Học biểu diễn đa ngôn ngữ:**  MBART học được các biểu diễn chung giữa các ngôn ngữ, giúp cải thiện hiệu suất dịch máy, đặc biệt là đối với các cặp ngôn ngữ ít tài nguyên.
+* **Huấn luyện trước toàn bộ mô hình:**  MBART là một trong những mô hình đầu tiên huấn luyện trước toàn bộ mô hình chuỗi-tới-chuỗi, bao gồm cả bộ mã hóa và bộ giải mã.
+* **Giảm nhiễu toàn bộ văn bản:**  MBART được huấn luyện để giảm nhiễu toàn bộ văn bản, không chỉ các phần của văn bản.
+
+**Tóm lại:**
+
+MBART là một mô hình mạnh mẽ cho dịch máy đa ngôn ngữ. Nó được huấn luyện trước bằng cách giảm nhiễu toàn bộ văn bản bằng nhiều ngôn ngữ, cho phép nó học được các biểu diễn chung giữa các ngôn ngữ và cải thiện hiệu suất dịch máy.
+
 
 ## megatron_11b
 
+
+Megatron-11b là một mô hình ngôn ngữ đơn hướng (unidirectional language model) với 11 tỷ tham số (parameters), dựa trên Megatron-LM. Theo công trình Megatron ban đầu, chúng tôi đã huấn luyện mô hình bằng cách sử dụng song song mô hình trong lớp (intra-layer model parallelism) với các tham số của mỗi lớp được chia cho 8 GPU.
+
+**Giải thích:**
+
+* **Mô hình ngôn ngữ (Language model):** Là một mô hình AI được huấn luyện để dự đoán từ tiếp theo trong một chuỗi, dựa trên các từ trước đó. Mô hình ngôn ngữ được sử dụng trong nhiều ứng dụng như tạo văn bản, dịch máy, và nhận dạng giọng nói.
+* **Đơn hướng (Unidirectional):**  Mô hình chỉ xem xét các từ trước đó trong chuỗi để dự đoán từ tiếp theo.
+* **Tham số (Parameters):**  Các giá trị được điều chỉnh trong quá trình huấn luyện mô hình. Số lượng tham số thường thể hiện độ phức tạp và khả năng học hỏi của mô hình.
+* **Megatron-LM:**  Một framework để huấn luyện các mô hình ngôn ngữ quy mô lớn, được phát triển bởi NVIDIA.
+* **Song song mô hình trong lớp (Intra-layer model parallelism):**  Một kỹ thuật để huấn luyện các mô hình lớn bằng cách chia các tham số của mỗi lớp cho nhiều GPU.
+
+**Tóm lại:**
+
+Megatron-11b là một mô hình ngôn ngữ lớn với 11 tỷ tham số, được huấn luyện bằng kỹ thuật song song mô hình trong lớp trên 8 GPU. Mô hình này có thể được sử dụng cho các tác vụ xử lý ngôn ngữ tự nhiên như tạo văn bản và dịch máy.
+
+
 ## mms
+
+Dự án Ngôn ngữ Nói Đa ngôn ngữ ồ ạt (MMS) mở rộng công nghệ giọng nói từ khoảng 100 ngôn ngữ lên hơn 1.000 bằng cách xây dựng một mô hình nhận dạng giọng nói đa ngôn ngữ duy nhất hỗ trợ hơn 1.100 ngôn ngữ (nhiều hơn 10 lần so với trước đây), các mô hình nhận dạng ngôn ngữ có thể xác định hơn 4.000 ngôn ngữ (gấp 40 lần so với trước đây), các mô hình được đào tạo trước hỗ trợ hơn 1.400 ngôn ngữ và các mô hình văn bản thành giọng nói cho hơn 1.100 ngôn ngữ. Mục tiêu của chúng tôi là giúp mọi người dễ dàng truy cập thông tin và sử dụng thiết bị bằng ngôn ngữ ưa thích của họ.
+
+Giải thích:
+
+Google đang phát triển một dự án gọi là MMS (Massively Multilingual Speech) để mở rộng công nghệ nhận dạng giọng nói của họ. Hiện tại, công nghệ này mới chỉ hỗ trợ khoảng 100 ngôn ngữ. MMS sẽ tăng con số đó lên hơn 1000, giúp nhiều người hơn có thể sử dụng thiết bị và truy cập thông tin bằng ngôn ngữ mẹ đẻ của họ.
+
+Keywords: MMS (Massively Multilingual Speech), speech recognition, language identification.
+
 
 ## moe_lm
 
+**Efficient Large Scale Language Modeling with Mixtures of Experts**
+
+Giới thiệu
+
+Các lớp Hỗn hợp Chuyên gia (MoEs) cho phép mở rộng quy mô hiệu quả của các mô hình ngôn ngữ thông qua tính toán có điều kiện. Nghiên cứu này so sánh theo kinh nghiệm cách các mô hình ngôn ngữ MoE tự hồi quy mở rộng quy mô so với các mô hình dày đặc trong một loạt các cài đặt: mô hình hóa ngôn ngữ trong và ngoài miền, mồi không bắn và ít bắn, và tinh chỉnh hoàn toàn. Xem bài báo liên quan để biết thêm chi tiết.
+Kho lưu trữ này chứa các hướng dẫn để tái tạo kết quả từ bài báo.
+
+Giải thích:
+
+MoE (Mixture of Experts) là một kỹ thuật để cải thiện hiệu quả của các mô hình ngôn ngữ lớn. Nó hoạt động bằng cách chia mô hình thành các "chuyên gia" nhỏ hơn, mỗi chuyên gia chuyên về một loại dữ liệu hoặc nhiệm vụ cụ thể. Khi xử lý dữ liệu đầu vào, chỉ một số chuyên gia được kích hoạt, giúp giảm khối lượng tính toán cần thiết. 
+
+Nghiên cứu này so sánh hiệu quả của MoE với các mô hình ngôn ngữ truyền thống ("mô hình dày đặc") trong các nhiệm vụ khác nhau, bao gồm cả tạo văn bản và dịch máy. Kết quả cho thấy MoE có thể đạt được hiệu suất tương đương với các mô hình dày đặc nhưng sử dụng ít tài nguyên tính toán hơn.
+
+Keywords: MoE (Mixture of Experts), large language models, conditional computation.
+
+
 ## mr_hubert
+
+
+MR-HuBERT là một mô hình học biểu diễn âm thanh tự giám sát. Tên của nó là sự kết hợp của các thành phần chính:
+
+* **MR:** Multi-lingual Representation (Biểu diễn đa ngôn ngữ) - Mô hình được huấn luyện trên dữ liệu đa ngôn ngữ, cho phép nó học các đặc trưng âm thanh phổ quát áp dụng cho nhiều ngôn ngữ.
+* **HuBERT:** Hidden-Unit BERT (BERT đơn vị ẩn) - Mô hình sử dụng kiến trúc BERT, một kiến trúc mạng nơ-ron mạnh mẽ trong xử lý ngôn ngữ tự nhiên, nhưng được điều chỉnh để xử lý dữ liệu âm thanh. Thay vì dự đoán các từ bị che, HuBERT dự đoán các đơn vị ẩn trong biểu diễn âm thanh.
+
+MR-HuBERT học bằng cách lắng nghe dữ liệu âm thanh thô, không cần nhãn. Nó tự tạo ra các nhiệm vụ "điền vào chỗ trống" bằng cách che đi một phần âm thanh và cố gắng dự đoán phần bị che dựa trên ngữ cảnh xung quanh. Quá trình này giúp mô hình học được các đặc trưng âm thanh quan trọng và các mẫu trong dữ liệu.
+
+MR-HuBERT có thể được sử dụng làm bước tiền xử lý (pre-training) cho các nhiệm vụ học máy liên quan đến âm thanh, chẳng hạn như nhận dạng giọng nói, phân loại âm thanh và tổng hợp giọng nói. Bằng cách sử dụng biểu diễn âm thanh học được từ MR-HuBERT, các mô hình học máy khác có thể đạt được hiệu suất tốt hơn với ít dữ liệu được gán nhãn hơn.
+
+Keywords: MR-HuBERT, multi-lingual, self-supervised learning, audio representation, BERT.
+
 
 ## multilingual
 
+**Multilingual Translation**
+[Multilingual Translation with Extensible Multilingual Pretraining and Finetuning, https://arxiv.org/abs/2008.00401]
+
+Dịch: Dịch đa ngôn ngữ
+
+Giải thích:
+
+Đây là một bài báo nghiên cứu về dịch máy đa ngôn ngữ, tức là dịch giữa nhiều cặp ngôn ngữ khác nhau. Bài báo đề xuất một phương pháp mới gọi là "Extensible Multilingual Pretraining and Finetuning" để cải thiện hiệu quả của dịch máy đa ngôn ngữ.
+
+Phương pháp này bao gồm hai giai đoạn chính:
+
+* **Tiền huấn luyện đa ngôn ngữ mở rộng (Extensible Multilingual Pretraining):** Mô hình được huấn luyện trên một lượng lớn dữ liệu song ngữ từ nhiều cặp ngôn ngữ. Điều này cho phép mô hình học các đặc trưng chung của nhiều ngôn ngữ, giúp cải thiện khả năng dịch giữa các cặp ngôn ngữ mới mà mô hình chưa từng thấy trước đây.
+* **Tinh chỉnh (Finetuning):** Sau khi được tiền huấn luyện, mô hình được tinh chỉnh trên một tập dữ liệu nhỏ hơn dành riêng cho cặp ngôn ngữ cần dịch. Điều này giúp mô hình điều chỉnh các tham số của nó để phù hợp hơn với đặc thù của cặp ngôn ngữ đó.
+
+Kết quả thực nghiệm cho thấy phương pháp này đạt được hiệu suất vượt trội so với các phương pháp dịch máy đa ngôn ngữ trước đây, đặc biệt là trong các trường hợp có ít dữ liệu huấn luyện.
+
+Keywords: multilingual translation, extensible multilingual pretraining, finetuning.
+
 ## noisychannel
+
+**Simple and Effective Noisy Channel Modeling for Neural Machine Translation (Yee et al., 2019)**
+
+Dịch: Mô hình kênh nhiễu đơn giản và hiệu quả cho dịch máy thần kinh (Yee và cộng sự, 2019)
+
+Giải thích:
+
+Bài báo này đề xuất một phương pháp đơn giản và hiệu quả để cải thiện hiệu suất của dịch máy thần kinh bằng cách sử dụng mô hình kênh nhiễu (noisy channel model). 
+
+Ý tưởng chính của mô hình kênh nhiễu là xem quá trình dịch như một quá trình truyền thông tin qua một kênh nhiễu. Câu nguồn được coi là tín hiệu gốc, và câu dịch là tín hiệu nhận được sau khi đi qua kênh nhiễu. Mục tiêu của mô hình dịch là khôi phục lại tín hiệu gốc từ tín hiệu nhận được.
+
+Trong bài báo này, các tác giả sử dụng một mô hình ngôn ngữ để mô phỏng kênh nhiễu. Mô hình ngôn ngữ này được huấn luyện trên dữ liệu đơn ngữ của ngôn ngữ đích. 
+
+Khi dịch một câu, mô hình dịch sẽ tạo ra nhiều câu dịch ứng viên. Sau đó, mô hình kênh nhiễu sẽ đánh giá xác suất của mỗi câu dịch ứng viên dựa trên độ tự nhiên của nó trong ngôn ngữ đích. Câu dịch ứng viên có xác suất cao nhất sẽ được chọn làm câu dịch cuối cùng.
+
+Phương pháp này giúp cải thiện hiệu suất dịch bằng cách tận dụng thông tin từ mô hình ngôn ngữ. Nó đặc biệt hiệu quả trong việc xử lý các lỗi dịch do sự khác biệt về cấu trúc ngữ pháp giữa ngôn ngữ nguồn và ngôn ngữ đích.
+
+Keywords: noisy channel model, neural machine translation, language model.
+
 
 ## nonautoregressive_translation
 
+**Non-autoregressive Neural Machine Translation (NAT)**
+This page mainly includes instructions for reproducing results from the following papers
+
+- Levenshtein Transformer (Gu et al., 2019).
+- Understanding Knowledge Distillation in Non-autoregressive Machine Translation (Zhou et al., 2019).
+
+Dịch: Dịch máy thần kinh phi tự hồi quy (NAT)
+
+Giải thích:
+
+Trang này chủ yếu bao gồm các hướng dẫn để tái tạo kết quả từ các bài báo sau:
+Levenshtein Transformer (Gu và cộng sự, 2019).
+Hiểu biết về Chưng cất Kiến thức trong Dịch máy phi tự hồi quy (Zhou và cộng sự, 2019).
+
+Dịch máy thần kinh phi tự hồi quy (NAT) là một phương pháp dịch máy mới nổi, khác với phương pháp truyền thống (tự hồi quy) ở chỗ nó tạo ra tất cả các từ trong câu dịch cùng một lúc, thay vì tạo ra từng từ một. Điều này cho phép NAT dịch nhanh hơn đáng kể so với các mô hình tự hồi quy.
+
+Hai bài báo được đề cập ở trên đã đóng góp đáng kể vào sự phát triển của NAT:
+
+* **Levenshtein Transformer:** Bài báo này đề xuất một kiến trúc Transformer mới được thiết kế đặc biệt cho NAT. Kiến trúc này sử dụng khoảng cách Levenshtein để đo lường sự khác biệt giữa câu nguồn và câu dịch, giúp mô hình học cách tạo ra các câu dịch chính xác hơn.
+* **Understanding Knowledge Distillation in Non-autoregressive Machine Translation:** Bài báo này nghiên cứu về kỹ thuật chưng cất kiến thức (knowledge distillation) trong NAT. Chưng cất kiến thức là một kỹ thuật để huấn luyện một mô hình nhỏ hơn ("học sinh") bằng cách sử dụng kiến thức từ một mô hình lớn hơn ("giáo viên"). Bài báo này chỉ ra rằng chưng cất kiến thức có thể cải thiện đáng kể hiệu suất của các mô hình NAT.
+
+NAT vẫn đang trong giai đoạn phát triển ban đầu, nhưng nó có tiềm năng cách mạng hóa lĩnh vực dịch máy nhờ tốc độ và hiệu quả của nó.
+
+Keywords: Non-autoregressive Neural Machine Translation (NAT), Levenshtein Transformer, knowledge distillation.
+
 ## NormFormer
 
-## operators
+This is the code for the "NormFormer: **Improved Transformer Pretraining with Extra Normalization**"
+
+
+NormFormer là một kiến trúc Transformer được cải tiến bằng cách thêm các lớp chuẩn hóa (normalization layers) bổ sung. Các lớp chuẩn hóa này giúp ổn định quá trình huấn luyện và cải thiện hiệu suất của mô hình.
+
+Trong kiến trúc Transformer gốc, chỉ có một lớp chuẩn hóa được sử dụng sau mỗi lớp attention và lớp feed-forward. NormFormer thêm các lớp chuẩn hóa bổ sung trước lớp attention và lớp feed-forward. 
+
+Các lớp chuẩn hóa bổ sung này giúp giảm thiểu vấn đề "vanishing gradients" (gradient biến mất), một vấn đề phổ biến trong huấn luyện các mạng nơ-ron sâu. Gradient biến mất xảy ra khi các gradient trở nên rất nhỏ trong quá trình lan truyền ngược, khiến cho việc cập nhật các trọng số của mạng trở nên khó khăn.
+
+Bằng cách thêm các lớp chuẩn hóa bổ sung, NormFormer giúp duy trì độ lớn của các gradient trong suốt quá trình huấn luyện, giúp mô hình học hiệu quả hơn.
+
+Kết quả thực nghiệm cho thấy NormFormer đạt được hiệu suất vượt trội so với Transformer gốc trong các nhiệm vụ xử lý ngôn ngữ tự nhiên, bao gồm dịch máy và tạo văn bản.
+
+Keywords: NormFormer, Transformer, normalization, vanishing gradients.
+
 
 ## paraphraser
 
+**Paraphrasing with round-trip translation and mixture of experts**
+
+Dịch: 
+
+Sử dụng dịch máy khứ hồi và hỗn hợp chuyên gia để diễn giải văn bản
+
+Các mô hình dịch máy có thể được sử dụng để diễn giải văn bản bằng cách dịch văn bản sang một ngôn ngữ trung gian rồi dịch ngược lại (dịch khứ hồi).
+Ví dụ này cho thấy cách diễn giải văn bản bằng cách đầu tiên đưa nó vào mô hình dịch Anh-Pháp, sau đó là mô hình dịch Pháp-Anh hỗn hợp chuyên gia.
+
+
+Giải thích:
+
+Diễn giải văn bản (paraphrasing) là việc diễn đạt lại một ý tưởng bằng các từ ngữ khác nhau nhưng vẫn giữ nguyên ý nghĩa. Phương pháp dịch khứ hồi (round-trip translation) tận dụng mô hình dịch máy để diễn giải văn bản. 
+
+Ví dụ, để diễn giải một câu tiếng Anh, ta có thể dịch câu đó sang tiếng Pháp, rồi dịch câu tiếng Pháp đó trở lại tiếng Anh. Do sự khác biệt về cấu trúc ngữ pháp và từ vựng giữa hai ngôn ngữ, câu tiếng Anh thu được sau khi dịch khứ hồi có thể sẽ khác với câu gốc nhưng vẫn giữ nguyên ý nghĩa.
+
+Trong ví dụ này, phương pháp dịch khứ hồi được kết hợp với mô hình hỗn hợp chuyên gia (mixture of experts) để cải thiện chất lượng diễn giải. Mô hình hỗn hợp chuyên gia là một loại mô hình dịch máy sử dụng nhiều "chuyên gia" nhỏ hơn, mỗi chuyên gia chuyên về một loại dữ liệu hoặc nhiệm vụ cụ thể. Điều này giúp mô hình tạo ra các bản dịch chính xác và đa dạng hơn.
+
+Keywords: paraphrasing, round-trip translation, mixture of experts.
+
+
 ## pay_less_attention_paper
 
+**Pay Less Attention with Lightweight and Dynamic Convolutions (Wu et al., 2019)**
+
+Dịch: 
+
+Chú ý ít hơn với các phép tích chập nhẹ và động (Wu và cộng sự, 2019)
+
+
+Giải thích:
+
+Bài báo này đề xuất một phương pháp mới để giảm chi phí tính toán của cơ chế attention trong các mô hình Transformer. Phương pháp này sử dụng các phép tích chập nhẹ và động (lightweight and dynamic convolutions) để thay thế cho các phép tính attention truyền thống.
+
+Cơ chế attention là một thành phần quan trọng trong các mô hình Transformer, cho phép mô hình tập trung vào các phần quan trọng của dữ liệu đầu vào. Tuy nhiên, attention cũng là một trong những thành phần tốn kém nhất về mặt tính toán.
+
+Các phép tích chập nhẹ và động được sử dụng trong bài báo này có chi phí tính toán thấp hơn so với attention truyền thống, đồng thời vẫn duy trì được hiệu quả của mô hình. Các phép tích chập này được gọi là "động" vì các tham số của chúng được điều chỉnh một cách linh hoạt dựa trên dữ liệu đầu vào.
+
+Kết quả thực nghiệm cho thấy phương pháp này giúp giảm đáng kể chi phí tính toán của các mô hình Transformer, mà không làm giảm hiệu suất của mô hình.
+
+Keywords: attention, Transformer, lightweight and dynamic convolutions.
+
+
 ## pointer_generator
+
+**Transformer with Pointer-Generator Network**
+
+Giải thích:
+
+Mô hình Transformer kết hợp với mạng con trỏ-bộ tạo (pointer-generator network) là một cải tiến giúp mô hình Transformer có thể sao chép trực tiếp các từ từ đầu vào sang đầu ra. Điều này đặc biệt hữu ích trong các trường hợp sau:
+
+* **Xử lý từ vựng ngoài (Out-of-vocabulary words):** Khi gặp một từ không có trong từ vựng, mô hình có thể sao chép trực tiếp từ đó từ đầu vào thay vì cố gắng tạo ra một từ gần nghĩa.
+* **Tạo văn bản tóm tắt:** Mô hình có thể sao chép các từ hoặc cụm từ quan trọng từ văn bản gốc vào bản tóm tắt.
+* **Dịch máy:** Mô hình có thể sao chép các tên riêng hoặc thuật ngữ chuyên ngành từ ngôn ngữ nguồn sang ngôn ngữ đích.
+
+Cơ chế trỏ hoạt động bằng cách sử dụng phân phối chú ý (attention distribution) để xác định từ nào trong đầu vào cần được sao chép. Phân phối chú ý này được kết hợp với phân phối xác suất trên từ vựng để tạo ra đầu ra cuối cùng.
+
+Keywords: Transformer, pointer-generator network, attention distribution, out-of-vocabulary words.
+
 
 ## quant_noise
 
