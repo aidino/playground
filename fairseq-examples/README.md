@@ -11,7 +11,7 @@ Bạn vừa khám phá ra bộ công cụ tuyệt vời để hiểu video đa p
 
 Tóm lại, bộ công cụ này cung cấp các phương pháp mạnh mẽ để phân tích và hiểu video đa phương thức, với khả năng ứng dụng cao trong nhiều lĩnh vực.
 
-## 02. adaptive_span - Adaptive Span
+## 02. adaptive_span - Adaptive Span (ERROR)
 
 Adaptive Span là một cơ chế tự chú ý mới có thể tự học khoảng chú ý tối ưu của nó. Điều này cho phép chúng ta mở rộng đáng kể kích thước ngữ cảnh tối đa được sử dụng trong Transformer, đồng thời vẫn kiểm soát được lượng bộ nhớ và thời gian tính toán. Nó sử dụng kỹ thuật Truncated BPTT để huấn luyện, giống như trong transformerXL.
 
@@ -26,7 +26,7 @@ Adaptive Span được giới thiệu trong bài báo "Adaptive Attention Span i
 
 Chúng tôi đã tái tạo kết quả của họ trong fairseq và giữ nguyên hầu hết code ban đầu. Bạn có thể tham khảo tệp sweep của họ nếu có bất kỳ sự kết hợp nào của siêu tham số không rõ ràng.
 
-## attention_head_selection
+## 03. attention_head_selection
 
 **Paper: Pay Better Attention to Attention: Head Selection in Multilingual and Multi-Domain Sequence Modeling (Gong et al., 2021)**
 
